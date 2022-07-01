@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+
+<header>
+
+    <div class="logo">
+        <a href="index.html">
+            <span class="use">TELE</span>-<span class="web">BOOK</span>
+        </a>
+
+    </div>
+
+    <div class="top-menu">
+        <ul>
+            <li><a class="clickMenu" href="#">Темы</a></li>
+            {% if request.user.is_authenticated %}
+            <li><a href="{% url 'add_contact' %}">Добавить контакт</a></li>
+            {% endif %}
+        </ul>
+    </div>
+
+    <div class="block-top-auth">
+        {% if request.user.is_authenticated %}
+        <p><a href="">Добро пожаловать</a></p>
+        <p><a href="{% url 'logout' %}">Выход</a></p>
+        {% else %}
+        <p><a href="{% url 'login' %}">Вход</a></p>
+        <p><a href="{% url 'register' %}">Регистрация</a></p>
+        {% endif %}
+    </div>
+
+</header>
+
+<div class="content-telebook">
+
+<form action="{% url 'search' %}" method="get">
+    <label>Введите имя:</label>
+    <input name="search" type="text" placeholder="Search...">
+
+</form>
+
+<table border="1">
+    <tr>
+        <th>Имя контакта</th>
+        <th>Номер контакта</th>
+        <th>Удаление контакта</th>
+    </tr>
+    {% for item in object_list %}
+    <tr>
+        <td>{{ item.name }}</td>
+        <td>{{ item.number }}</td>
+        {% if request.user.is_authenticated %}
+        <td><a href="{% url 'delete_contact' item.id %}">Удалить контакт</a></td>
+        {% endif %}
+    </tr>
+    {% endfor %}
+</table>
+
+
+</div>
+</body>
+</html>

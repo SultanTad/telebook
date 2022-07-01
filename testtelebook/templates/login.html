@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+{% if messages %}
+
+{% for message in messages %}
+
+{% if message.tags == 'success' %}
+<div style="color: green">
+    {{ message }}
+</div>
+{% endif %}
+
+{% endfor %}
+
+{% endif %}
+
+<h1>Авторизация</h1>
+
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+<button type="submit">Войти</button>
+</form>
+
+
+</body>
+</html>
