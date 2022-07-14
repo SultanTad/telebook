@@ -1,46 +1,46 @@
 from django.contrib import messages
 from django.shortcuts import render, redirect
-from django.views.generic import ListView, CreateView
-from django.urls import reverse
-from .models import Phone
-from .forms import AddForm
+from django_filters.views import FilterView
+from django.views.generic import UpdateView
+
+from .models import *
+from .forms import AddNameContact, AddTypeContact
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth import login, logout
+from .filters import TeleBookFilter
 
 
-class TeleView(ListView):
-    model = Phone
-    template_name = 'index.html'
-    queryset = Phone.objects.all()
-
-
-class TeleSearch(ListView):
+class FilterList(FilterView):
+    model = TypesInPhone
+    filterset_class = TeleBookFilter
     template_name = 'index.html'
 
-    def get_queryset(self):
-        return Phone.objects.filter(name__icontains=self.request.GET.get('search'))
 
-    def get_context_data(self, *, object_list=None, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['search'] = self.request.GET.get('search')
-        return context
+def edit_contact(request):
+    contact = ContactInPhone.objects.all()
+    types = TypesInPhone.objects.get('types', 'contact', 'numbers')
+    return render(request, 'edit_contact.html', {'contact': contact, 'types': types})
 
 
 def add_contact(request):
     if request.method == 'POST':
-        form = AddForm(request.POST)
-        if form.is_valid():
-            Phone.objects.create(**form.cleaned_data)
+        name_contact = AddNameContact(request.POST)
+        type_contact = AddTypeContact(request.POST)
+        if name_contact.is_valid() and type_contact.is_valid():
+            name_contact.save()
+            type_contact.save()
             return redirect('home')
+        else:
+            context = {
+                'name_contact': name_contact,
+                'type_contact': type_contact,
+            }
     else:
-        form = AddForm()
-    return render(request, 'add_contact.html', {'form': form})
-
-
-def delete_contact(request, pk):
-    get_phone = Phone.objects.get(pk=pk)
-    get_phone.delete()
-    return redirect(reverse('home'))
+        context = {
+            'name_contact': AddNameContact,
+            'type_contact': AddTypeContact,
+        }
+    return render(request, 'add_contact.html', context=context)
 
 
 def user_login(request):
@@ -72,12 +72,6 @@ def register(request):
     else:
         form = UserCreationForm()
     return render(request, 'register.html', {'form': form})
-
-
-
-
-
-
 
 
 

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<table border="1">
+    <tr>
+        <th>Имя контакта</th>
+        <th>Фамилия контакта</th>
+        <th>Отчество контакта</th>
+        <th>Полное имя контакта</th>
+        <th>Номер контакта</th>
+        <th>Удаление контакта</th>
+        <th>Редактирование контакта</th>
+    </tr>
+    {% for item in contact %}
+    <tr>
+        <td>{{ item.surname }}</td>
+        <td>{{ item.name }}</td>
+        <td>{{ item.patronymic }}</td>
+    </tr>
+    {% endfor %}
+    {% for item in types %}
+    <tr>
+        <td>{{ item.contact }}</td>
+        <td>{{ item.types }}</td>
+        <td>{{ item.numbers }}</td>
+        <td><a href="#">Удалить контакт</a></td>
+        <td><a href="#">Редактировать контакт</a></td>
+    </tr>
+    {% endfor %}
+</table>
+</body>
+</html>

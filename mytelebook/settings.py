@@ -38,6 +38,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'testtelebook.apps.TesttelebookConfig',
+    'django_tables2',
+    'django_filters',
+
 ]
 
 MIDDLEWARE = [
