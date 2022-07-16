@@ -9,7 +9,6 @@
 <form action="{% url 'add_contact' %}" method="post">
     {% csrf_token %}
     {{ name_contact.as_p }}
-    {{ type_contact.as_p }}
 <button type="submit">Добавить контакт</button>
 </form>
 

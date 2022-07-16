@@ -8,11 +8,6 @@ class AddNameContact(forms.ModelForm):
         fields = '__all__'
 
 
-class AddTypeContact(forms.ModelForm):
-    class Meta:
-        model = TypesInPhone
-        fields = '__all__'
-
 
 
 

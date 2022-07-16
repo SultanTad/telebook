@@ -7,31 +7,43 @@
 <body>
 
 <table border="1">
+
+    {% if update %}
+    <form id="update_contact" method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button form="update_contact" type="submit">Редактировать</button>
+        <button type="submit"><a href="{% url 'edit_contact' %}">Вернуться назад</a></button>
+    </form>
+    {% else %}
+
     <tr>
         <th>Имя контакта</th>
         <th>Фамилия контакта</th>
         <th>Отчество контакта</th>
-        <th>Полное имя контакта</th>
         <th>Номер контакта</th>
+        <th>Тип номера</th>
         <th>Удаление контакта</th>
         <th>Редактирование контакта</th>
     </tr>
+
     {% for item in contact %}
     <tr>
         <td>{{ item.surname }}</td>
         <td>{{ item.name }}</td>
         <td>{{ item.patronymic }}</td>
-    </tr>
-    {% endfor %}
-    {% for item in types %}
-    <tr>
-        <td>{{ item.contact }}</td>
-        <td>{{ item.types }}</td>
         <td>{{ item.numbers }}</td>
-        <td><a href="#">Удалить контакт</a></td>
-        <td><a href="#">Редактировать контакт</a></td>
+        <td>{{ item.types_in_phone }}</td>
+        <td><a href="{% url 'delete_contact' item.id %}">Удалить контакт</a></td>
+        <td><a href="{% url 'update_contact' item.id %}">Редактировать контакт</a></td>
     </tr>
     {% endfor %}
+
+    {% endif %}
+
 </table>
+
+<button type="submit"><a href="{% url 'home' %}">На главную</a></button>
+
 </body>
 </html>
